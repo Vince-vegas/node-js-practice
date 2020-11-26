@@ -1,5 +1,6 @@
 const fs = require('fs');
 const http = require('http');
+const url = require('url');
 
 /*
 // sync
@@ -15,16 +16,47 @@ fs.readFile('./store/javascript.txt', 'utf-8', (err, data) => {
 });
 */
 
-const data = fs.readFileSync('./data.json', 'utf-8');
+const replaceTemp = (temp, el) => {
+  let a = temp.replace('{%MOVIE_TITLE%}', el.title);
+  a = a.replace('{%MOVIE_TITLE%}', el.title);
+  a = a.replace('{%ID%}', el.id);
+  a = a.replace('{%MOVIE_TEXT%}', el.desc);
+  return a;
+};
+
+const movieData = fs.readFileSync('./store/movie-data.json', 'utf-8');
+const parseMovieData = JSON.parse(movieData);
+
+const tempOverview = fs.readFileSync('./templates/overview.html', 'utf-8');
+const tempProduct = fs.readFileSync('./templates/product-movie.html', 'utf-8');
+
+const tempCard = fs.readFileSync('./templates/movie-card.html', 'utf-8');
+const movieItemHtml = fs.readFileSync('./templates/movie-item.html', 'utf-8');
 
 const server = http.createServer((req, res) => {
-  if (req.url === '/') {
+  const { pathname, query } = url.parse(req.url, true);
+  // OVERVIEW
+  if (pathname === '/' || pathname === 'overview') {
     res.writeHead(200, {
-      test: 'TEST-HEADER',
+      'Content-Type': 'text/html',
     });
-    res.end(data);
-  } else if (req.url === '/api') {
-    res.end('API PAGE');
+
+    const movieCards = parseMovieData
+      .map((el) => replaceTemp(tempCard, el))
+      .join('');
+
+    const movieHtml = tempOverview.replace('{%MOVIE_BOX%}', movieCards);
+    res.end(movieHtml);
+
+    // MOVIE
+  } else if (pathname === '/movie') {
+    const movieItem = parseMovieData[query.id];
+
+    const movieHtml = tempProduct.replace(
+      '{%movie-title%}',
+      replaceTemp(movieItemHtml, movieItem)
+    );
+    res.end(movieHtml);
   } else {
     res.end('NOT A PAGE');
   }
