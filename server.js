@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 
 dotenv.config({
   path: './config.env',
@@ -7,6 +7,7 @@ dotenv.config({
 
 const app = require('./app');
 
+/*
 const DB = process.env.DATABASE.replace(
   '<password>',
   process.env.DATABASE_PASSWORD
@@ -25,6 +26,7 @@ const projectSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Must contain a name'],
+    unique: true,
   },
   resolved: {
     type: String,
@@ -34,6 +36,22 @@ const projectSchema = new mongoose.Schema({
 });
 
 const Project = mongoose.model('Project', projectSchema);
+
+const testProject = new Project({
+  name: 'Movie App',
+  resolved: true,
+});
+
+testProject
+  .save()
+  .then((item) => {
+    console.log(item);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+*/
 
 app.listen(3000, () => {
   console.log('Server Started');
