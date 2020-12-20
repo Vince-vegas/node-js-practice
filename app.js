@@ -1,11 +1,8 @@
 const express = require('express');
-const projectRouter = require('./routes/projects');
-
+const projectsRouter = require('./routes/projectsRouter');
 const app = express();
 app.use(express.json());
 
-// ROUTES
-
-app.use('/projects', projectRouter);
+app.use('/projects', projectsRouter);
 
 module.exports = app;
