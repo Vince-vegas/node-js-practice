@@ -6,19 +6,19 @@ dotenv.config({
   path: './config.env',
 });
 
-const DBPATH = process.env.DATABASE.replace(
-  '<DBPASSWORD>',
+const DB = process.env.DATABASE_PATH.replace(
+  '<password>',
   process.env.DATABASE_PASSWORD
 );
 
 mongoose
-  .connect(DBPATH, {
+  .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
   })
-  .then(() => console.log('DB Started'));
+  .then(() => console.log('DATABASE CONNECTED'));
 
 app.listen(3000, () => {
   console.log('Server Started');

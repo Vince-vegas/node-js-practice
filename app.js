@@ -1,8 +1,10 @@
 const express = require('express');
-const projectsRouter = require('./routes/projectsRouter');
+const { homepage } = require('./controllers/productControllers');
+const productRoutes = require('./routes/productRouter');
 const app = express();
 app.use(express.json());
 
-app.use('/projects', projectsRouter);
+app.get('/', homepage);
+app.use('/products', productRoutes);
 
 module.exports = app;
