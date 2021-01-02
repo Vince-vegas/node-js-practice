@@ -8,3 +8,5 @@ app.get('/', homepage);
 app.use('/products', productRoutes);
 
 module.exports = app;
+
+console.log(b);

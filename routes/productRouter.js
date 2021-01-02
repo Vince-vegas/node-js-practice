@@ -6,11 +6,14 @@ const {
   updateProduct,
   deleteProduct,
   getTopSales,
+  getTopRatings,
 } = require('../controllers/productControllers');
 
 const productRoutes = express.Router();
 
 productRoutes.route('/top-sales').get(getTopSales, getProducts);
+
+productRoutes.route('/top-rate').get(getTopRatings);
 
 productRoutes.route('/').get(getProducts).post(createProduct);
 

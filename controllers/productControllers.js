@@ -138,3 +138,30 @@ exports.deleteProduct = async (req, res) => {
     });
   }
 };
+
+exports.getTopRatings = async (req, res) => {
+  try {
+    const topRate = await Product.aggregate([]);
+
+    // const topRate = await Product.aggregate([
+    //   {
+    //     $group: {
+    //       _id: '$rating',
+    //       maxStock: { $max: '$stock' },
+    //       numCount: { $sum: 1 },
+    //     },
+    //   },
+    // ]);
+
+    res.status(200).json({
+      status: 'success',
+      // results: topRate.length,
+      topRate,
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'error',
+      message: error,
+    });
+  }
+};
